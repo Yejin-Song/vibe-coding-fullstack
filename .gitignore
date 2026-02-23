@@ -1,0 +1,8 @@
+.gradle/
+build/
+.vscode/
+out/
+bin/
+.DS_Store
+*.swp
+*.log
