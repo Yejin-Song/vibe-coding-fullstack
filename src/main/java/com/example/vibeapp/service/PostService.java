@@ -33,4 +33,12 @@ public class PostService {
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
+
+    public Post getPost(Long no) {
+        Post post = postRepository.findById(no);
+        if (post != null) {
+            post.setViews(post.getViews() + 1);
+        }
+        return post;
+    }
 }

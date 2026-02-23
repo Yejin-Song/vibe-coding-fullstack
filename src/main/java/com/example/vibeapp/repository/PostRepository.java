@@ -17,4 +17,11 @@ public class PostRepository {
     public List<Post> findAll() {
         return new ArrayList<>(database);
     }
+
+    public Post findById(Long no) {
+        return database.stream()
+                .filter(post -> post.getNo().equals(no))
+                .findFirst()
+                .orElse(null);
+    }
 }

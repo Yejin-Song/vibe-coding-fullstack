@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Posts | Vibe Coding</title>
+    <title th:text="${post.title} + ' | Vibe Coding'">Post Detail | Vibe Coding</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
         rel="stylesheet" />
@@ -71,47 +71,53 @@
     </nav>
 
     <main class="hero-gradient min-h-screen py-20 px-6 lg:px-12">
-        <div class="max-w-[1200px] mx-auto">
+        <div class="max-w-[800px] mx-auto">
             <header class="mb-12">
-                <h2 class="text-sm font-bold tracking-widest uppercase mb-4 text-gray-600">Community Board</h2>
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">게시글 목록</h1>
-                <p class="text-gray-600 text-lg">Vibe Coding 커뮤니티의 최신 소식을 확인하세요.</p>
+                <div class="flex items-center gap-4 mb-6">
+                    <a th:href="@{/posts}"
+                        class="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-black transition-colors">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        Back to List
+                    </a>
+                </div>
+                <h2 class="text-sm font-bold tracking-widest uppercase mb-4 text-samsung-blue"
+                    th:text="'Post #' + ${post.no}">Post #1</h2>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8" th:text="${post.title}">게시글 제목</h1>
+
+                <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500 border-y border-gray-100 py-6">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">calendar_today</span>
+                        <span
+                            th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">edit_calendar</span>
+                        <span
+                            th:text="'수정일: ' + ${#temporals.format(post.updatedAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">visibility</span>
+                        <span th:text="'조회수: ' + ${post.views}">123</span>
+                    </div>
+                </div>
             </header>
 
-            <div class="bg-white rounded-[32px] overflow-hidden shadow-xl border border-gray-100">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50 border-b border-gray-100">
-                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500 w-24">번호</th>
-                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500">제목</th>
-                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500 w-48">생성일</th>
-                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500 w-32">조회수</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr th:each="post : ${posts}" class="hover:bg-gray-50 transition-colors group">
-                            <td class="px-8 py-6 text-sm font-medium text-gray-400" th:text="${post.no}">1</td>
-                            <td class="px-8 py-6">
-                                <a th:href="@{/posts/{no}(no=${post.no})}"
-                                    class="text-lg font-bold text-black group-hover:text-samsung-blue transition-colors"
-                                    th:text="${post.title}">게시글 제목</a>
-                            </td>
-                            <td class="px-8 py-6 text-sm text-gray-500"
-                                th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
-                            <td class="px-8 py-6">
-                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold"
-                                    th:text="${post.views}">123</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <article class="bg-white rounded-[32px] p-10 md:p-16 shadow-xl border border-gray-100 min-h-[400px]">
+                <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed whitespace-pre-wrap"
+                    th:text="${post.content}">
+                    게시글 내용이 여기에 표시됩니다.
+                </div>
+            </article>
 
-            <div class="mt-12 flex justify-center">
-                <button
-                    class="bg-black text-white px-10 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
-                    새 글 작성하기
-                </button>
+            <div class="mt-12 flex justify-between items-center">
+                <a th:href="@{/posts}"
+                    class="border-2 border-black text-black px-8 py-3 rounded-full font-bold text-sm hover:bg-gray-50 transition-colors">
+                    목록으로
+                </a>
+                <div class="flex gap-4">
+                    <button class="text-gray-400 hover:text-black transition-colors font-bold text-sm px-4">수정</button>
+                    <button class="text-red-400 hover:text-red-600 transition-colors font-bold text-sm px-4">삭제</button>
+                </div>
             </div>
         </div>
     </main>
