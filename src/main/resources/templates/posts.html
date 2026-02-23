@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Posts | Vibe Coding</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "accent-blue": "#1428a0",
+                        "bg-light": "#f4f4f4",
+                        "samsung-blue": "#034ea2"
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-sans antialiased text-black;
+                background-color: #ffffff;
+            }
+        }
+        .hero-gradient {
+            background: linear-gradient(180deg, #f7f7f7 0%, #ffffff 100%);
+        }
+        .nav-link {
+            @apply text-[14px] font-semibold text-black hover:opacity-70 transition-opacity;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <nav class="sticky top-0 z-[100] w-full bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-10">
+                <a class="text-xl font-extrabold tracking-tighter" th:href="@{/}">VIBE CODING</a>
+                <div class="hidden lg:flex items-center gap-8">
+                    <a class="nav-link" href="#">Product</a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Community</a>
+                    <a class="nav-link" href="#">Docs</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <button class="material-symbols-outlined text-black">shopping_cart</button>
+                    <button class="material-symbols-outlined text-black">person</button>
+                    <button class="bg-black text-white px-5 py-1.5 rounded-full text-xs font-bold hover:bg-gray-800">Buy
+                        Now</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="hero-gradient min-h-screen py-20 px-6 lg:px-12">
+        <div class="max-w-[1200px] mx-auto">
+            <header class="mb-12">
+                <h2 class="text-sm font-bold tracking-widest uppercase mb-4 text-gray-600">Community Board</h2>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">게시글 목록</h1>
+                <p class="text-gray-600 text-lg">Vibe Coding 커뮤니티의 최신 소식을 확인하세요.</p>
+            </header>
+
+            <div class="bg-white rounded-[32px] overflow-hidden shadow-xl border border-gray-100">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100">
+                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500 w-24">번호</th>
+                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500">제목</th>
+                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500 w-48">생성일</th>
+                            <th class="px-8 py-6 text-xs font-bold uppercase tracking-wider text-gray-500 w-32">조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr th:each="post : ${posts}" class="hover:bg-gray-50 transition-colors group">
+                            <td class="px-8 py-6 text-sm font-medium text-gray-400" th:text="${post.no}">1</td>
+                            <td class="px-8 py-6">
+                                <a href="#"
+                                    class="text-lg font-bold text-black group-hover:text-samsung-blue transition-colors"
+                                    th:text="${post.title}">게시글 제목</a>
+                            </td>
+                            <td class="px-8 py-6 text-sm text-gray-500"
+                                th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
+                            <td class="px-8 py-6">
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold"
+                                    th:text="${post.views}">123</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-12 flex justify-center">
+                <button
+                    class="bg-black text-white px-10 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
+                    새 글 작성하기
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 pt-16 pb-10 px-6 lg:px-12">
+        <div class="max-w-[1440px] mx-auto text-center">
+            <p class="text-slate-500 text-sm">© 2024 Vibe Coding Inc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

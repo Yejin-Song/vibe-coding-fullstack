@@ -1,0 +1,20 @@
+package com.example.vibeapp.repository;
+
+import com.example.vibeapp.domain.Post;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+public class PostRepository {
+    private final List<Post> database = new ArrayList<>();
+
+    public void save(Post post) {
+        database.add(post);
+    }
+
+    public List<Post> findAll() {
+        return new ArrayList<>(database);
+    }
+}
