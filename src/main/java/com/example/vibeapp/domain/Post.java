@@ -10,6 +10,9 @@ public class Post {
     private LocalDateTime updatedAt;
     private Integer views;
 
+    public Post() {
+    }
+
     public Post(Long no, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt, Integer views) {
         this.no = no;
         this.title = title;

@@ -11,6 +11,13 @@ public class PostRepository {
     private final List<Post> database = new ArrayList<>();
 
     public void save(Post post) {
+        if (post.getNo() == null) {
+            long maxNo = database.stream()
+                    .mapToLong(Post::getNo)
+                    .max()
+                    .orElse(0L);
+            post.setNo(maxNo + 1);
+        }
         database.add(post);
     }
 
