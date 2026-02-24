@@ -1,7 +1,5 @@
-package com.example.vibeapp.controller;
+package com.example.vibeapp.post;
 
-import com.example.vibeapp.domain.Post;
-import com.example.vibeapp.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +53,7 @@ public class PostController {
         postService.addPost(title, content);
         return "redirect:/posts";
     }
+
     @PostMapping("/posts/{no}/save")
     public String savePost(@PathVariable("no") Long no, @RequestParam("title") String title, @RequestParam("content") String content) {
         postService.updatePost(no, title, content);
