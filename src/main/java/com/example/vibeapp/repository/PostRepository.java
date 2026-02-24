@@ -31,4 +31,8 @@ public class PostRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    public void deleteById(Long no) {
+        database.removeIf(post -> post.getNo().equals(no));
+    }
 }
