@@ -22,21 +22,23 @@ public class PostService {
 
     @PostConstruct
     public void init() {
-        for (int i = 1; i <= 10; i++) {
-            postRepository.save(new Post(
-                (long) i,
-                "Vibe Coding 게시글 제목 " + i,
-                "이것은 세련된 게시글 " + i + "의 내용입니다. Vibe Coding 프로젝트가 원활하게 진행되고 있습니다.",
-                LocalDateTime.now().minusDays(10 - i),
-                LocalDateTime.now().minusDays(10 - i),
-                i * 15
-            ));
+        if (postRepository.count() == 0) {
+            for (int i = 1; i <= 10; i++) {
+                Post post = new Post(
+                    null,
+                    "Vibe Coding 게시글 제목 " + i,
+                    "이것은 세련된 게시글 " + i + "의 내용입니다. Vibe Coding 프로젝트가 원활하게 진행되고 있습니다.",
+                    LocalDateTime.now().minusDays(10 - i),
+                    null,
+                    i * 15
+                );
+                postRepository.save(post);
+            }
         }
     }
 
     public List<PostListDto> findAllPosts() {
         return postRepository.findAll().stream()
-                .sorted(Comparator.comparing(Post::getNo).reversed())
                 .map(PostListDto::from)
                 .collect(Collectors.toList());
     }
@@ -45,6 +47,7 @@ public class PostService {
         Post post = postRepository.findById(no);
         if (post != null) {
             post.setViews(post.getViews() + 1);
+            postRepository.update(post);
         }
         return PostResponseDto.from(post);
     }
@@ -60,6 +63,7 @@ public class PostService {
             post.setTitle(updateDto.title());
             post.setContent(updateDto.content());
             post.setUpdatedAt(LocalDateTime.now());
+            postRepository.update(post);
         }
     }
 
@@ -68,17 +72,18 @@ public class PostService {
     }
 
     public List<PostListDto> findPostsPaged(int page, int size) {
-        List<PostListDto> allPosts = findAllPosts();
-        int startIndex = (page - 1) * size;
-        if (startIndex >= allPosts.size()) {
-            return java.util.Collections.emptyList();
-        }
-        int endIndex = Math.min(startIndex + size, allPosts.size());
-        return allPosts.subList(startIndex, endIndex);
+        int offset = (page - 1) * size;
+        java.util.Map<String, Object> params = new java.util.HashMap<>();
+        params.put("size", size);
+        params.put("offset", offset);
+        
+        return postRepository.findPaged(params).stream()
+                .map(PostListDto::from)
+                .collect(Collectors.toList());
     }
 
     public int getTotalPages(int size) {
-        int totalPosts = postRepository.findAll().size();
+        int totalPosts = postRepository.count();
         return (int) Math.ceil((double) totalPosts / size);
     }
 }

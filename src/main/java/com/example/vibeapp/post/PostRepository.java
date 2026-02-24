@@ -1,37 +1,16 @@
 package com.example.vibeapp.post;
 
-import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
+import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
+import java.util.Map;
 
-@Repository
-public class PostRepository {
-    private final List<Post> database = new ArrayList<>();
-
-    public void save(Post post) {
-        if (post.getNo() == null) {
-            long maxNo = database.stream()
-                    .mapToLong(Post::getNo)
-                    .max()
-                    .orElse(0L);
-            post.setNo(maxNo + 1);
-        }
-        database.add(post);
-    }
-
-    public List<Post> findAll() {
-        return new ArrayList<>(database);
-    }
-
-    public Post findById(Long no) {
-        return database.stream()
-                .filter(post -> post.getNo().equals(no))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public void deleteById(Long no) {
-        database.removeIf(post -> post.getNo().equals(no));
-    }
+@Mapper
+public interface PostRepository {
+    List<Post> findAll();
+    Post findById(Long no);
+    void save(Post post);
+    void update(Post post);
+    void deleteById(Long no);
+    List<Post> findPaged(Map<String, Object> params);
+    int count();
 }
