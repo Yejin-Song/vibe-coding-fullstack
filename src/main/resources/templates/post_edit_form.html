@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>새 게시글 작성 | Vibe Coding</title>
+    <title th:text="'게시글 수정 | ' + ${post.title}">게시글 수정 | Vibe Coding</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
         rel="stylesheet" />
@@ -42,6 +42,9 @@
         .nav-link {
             @apply text-[14px] font-semibold text-black hover:opacity-70 transition-opacity;
         }
+        .form-input-readonly {
+            @apply bg-gray-100 cursor-not-allowed border-transparent text-gray-500;
+        }
     </style>
 </head>
 
@@ -73,33 +76,63 @@
     <main class="hero-gradient min-h-screen py-20 px-6 lg:px-12">
         <div class="max-w-[800px] mx-auto">
             <header class="mb-12 text-center">
-                <h2 class="text-sm font-bold tracking-widest uppercase mb-4 text-samsung-blue">게시글 작성</h2>
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">새 게시글 작성</h1>
-                <p class="text-gray-600">Vibe Coding 커뮤니티에 새로운 생각을 공유해 보세요.</p>
+                <h2 class="text-sm font-bold tracking-widest uppercase mb-4 text-samsung-blue"
+                    th:text="'게시글 #' + ${post.no}">게시글 #1</h2>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">게시글 수정</h1>
+                <p class="text-gray-600">게시글의 내용을 수정합니다.</p>
             </header>
 
             <div class="bg-white rounded-[32px] p-8 md:p-12 shadow-xl border border-gray-100">
-                <form th:action="@{/posts/add}" method="post" class="space-y-8">
+                <form th:action="@{/posts/{no}/save(no=${post.no})}" method="post" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="id" class="text-sm font-bold text-gray-700 ml-1">번호</label>
+                            <input type="text" id="id" th:value="${post.no}" readonly
+                                class="w-full px-6 py-4 rounded-2xl bg-gray-100 border-transparent outline-none text-gray-500 font-semibold cursor-not-allowed">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="views" class="text-sm font-bold text-gray-700 ml-1">조회수</label>
+                            <input type="text" id="views" th:value="${post.views}" readonly
+                                class="w-full px-6 py-4 rounded-2xl bg-gray-100 border-transparent outline-none text-gray-500 font-semibold cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="createdAt" class="text-sm font-bold text-gray-700 ml-1">생성일</label>
+                            <input type="text" id="createdAt"
+                                th:value="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}" readonly
+                                class="w-full px-6 py-4 rounded-2xl bg-gray-100 border-transparent outline-none text-gray-500 font-semibold cursor-not-allowed">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="updatedAt" class="text-sm font-bold text-gray-700 ml-1">수정일</label>
+                            <input type="text" id="updatedAt"
+                                th:value="${post.updatedAt != null ? #temporals.format(post.updatedAt, 'yyyy-MM-dd') : ''}"
+                                readonly
+                                class="w-full px-6 py-4 rounded-2xl bg-gray-100 border-transparent outline-none text-gray-500 font-semibold cursor-not-allowed">
+                        </div>
+                    </div>
+
                     <div class="space-y-2">
                         <label for="title" class="text-sm font-bold text-gray-700 ml-1">제목</label>
-                        <input type="text" id="title" name="title" required placeholder="게시글 제목을 입력하세요"
+                        <input type="text" id="title" name="title" required th:value="${post.title}"
                             class="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-samsung-blue focus:ring-4 focus:ring-samsung-blue/10 transition-all outline-none text-lg font-semibold">
                     </div>
 
                     <div class="space-y-2">
                         <label for="content" class="text-sm font-bold text-gray-700 ml-1">내용</label>
-                        <textarea id="content" name="content" required rows="10" placeholder="내용을 입력하세요"
+                        <textarea id="content" name="content" required rows="10" th:text="${post.content}"
                             class="w-full px-6 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-samsung-blue focus:ring-4 focus:ring-samsung-blue/10 transition-all outline-none resize-none leading-relaxed"></textarea>
                     </div>
 
                     <div class="flex items-center justify-center gap-4 pt-4">
-                        <a th:href="@{/posts}"
+                        <a th:href="@{'/posts/' + ${post.no}}"
                             class="px-10 py-4 rounded-full font-bold text-sm border-2 border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-black transition-all">
                             취소
                         </a>
                         <button type="submit"
                             class="px-12 py-4 rounded-full font-bold text-sm bg-black text-white hover:opacity-90 shadow-lg shadow-black/10 transition-all">
-                            게시글 등록
+                            저장
                         </button>
                     </div>
                 </form>

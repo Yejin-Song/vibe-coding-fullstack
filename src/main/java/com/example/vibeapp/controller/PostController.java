@@ -38,9 +38,21 @@ public class PostController {
         return "post_new_form";
     }
 
+    @GetMapping("/posts/{no}/edit")
+    public String editForm(@PathVariable("no") Long no, Model model) {
+        Post post = postService.getPost(no);
+        model.addAttribute("post", post);
+        return "post_edit_form";
+    }
+
     @PostMapping("/posts/add")
     public String addPost(@RequestParam("title") String title, @RequestParam("content") String content) {
         postService.addPost(title, content);
         return "redirect:/posts";
+    }
+    @PostMapping("/posts/{no}/save")
+    public String savePost(@PathVariable("no") Long no, @RequestParam("title") String title, @RequestParam("content") String content) {
+        postService.updatePost(no, title, content);
+        return "redirect:/posts/" + no;
     }
 }

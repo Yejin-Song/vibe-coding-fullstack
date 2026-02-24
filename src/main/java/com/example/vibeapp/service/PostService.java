@@ -53,6 +53,14 @@ public class PostService {
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(null);
         post.setViews(0);
-        postRepository.save(post);
+    }
+
+    public void updatePost(Long no, String title, String content) {
+        Post post = postRepository.findById(no);
+        if (post != null) {
+            post.setTitle(title);
+            post.setContent(content);
+            post.setUpdatedAt(LocalDateTime.now());
+        }
     }
 }

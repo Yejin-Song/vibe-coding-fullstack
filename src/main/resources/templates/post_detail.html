@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title th:text="${post.title} + ' | Vibe Coding'">Post Detail | Vibe Coding</title>
+    <title th:text="${post.title} + ' | Vibe Coding'">게시글 상세 | Vibe Coding</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
         rel="stylesheet" />
@@ -63,8 +63,8 @@
                 <div class="flex items-center gap-4">
                     <button class="material-symbols-outlined text-black">shopping_cart</button>
                     <button class="material-symbols-outlined text-black">person</button>
-                    <button class="bg-black text-white px-5 py-1.5 rounded-full text-xs font-bold hover:bg-gray-800">Buy
-                        Now</button>
+                    <button class="bg-black text-white px-5 py-1.5 rounded-full text-xs font-bold hover:bg-gray-800">지금
+                        구매</button>
                 </div>
             </div>
         </div>
@@ -77,11 +77,11 @@
                     <a th:href="@{/posts}"
                         class="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-black transition-colors">
                         <span class="material-symbols-outlined text-sm">arrow_back</span>
-                        Back to List
+                        목록으로 돌아가기
                     </a>
                 </div>
                 <h2 class="text-sm font-bold tracking-widest uppercase mb-4 text-samsung-blue"
-                    th:text="'Post #' + ${post.no}">Post #1</h2>
+                    th:text="'게시글 #' + ${post.no}">게시글 #1</h2>
                 <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-8" th:text="${post.title}">게시글 제목</h1>
 
                 <div class="flex flex-wrap items-center gap-6 text-sm text-gray-500 border-y border-gray-100 py-6">
@@ -115,7 +115,8 @@
                     목록으로
                 </a>
                 <div class="flex gap-4">
-                    <button class="text-gray-400 hover:text-black transition-colors font-bold text-sm px-4">수정</button>
+                    <a th:href="@{/posts/{no}/edit(no=${post.no})}"
+                        class="text-gray-400 hover:text-black transition-colors font-bold text-sm px-4 flex items-center">수정</a>
                     <button class="text-red-400 hover:text-red-600 transition-colors font-bold text-sm px-4">삭제</button>
                 </div>
             </div>
@@ -124,7 +125,7 @@
 
     <footer class="bg-white border-t border-gray-200 pt-16 pb-10 px-6 lg:px-12">
         <div class="max-w-[1440px] mx-auto text-center">
-            <p class="text-slate-500 text-sm">© 2024 Vibe Coding Inc. All rights reserved.</p>
+            <p class="text-slate-500 text-sm">© 2024 Vibe Coding Inc. 모든 권리 보유.</p>
         </div>
     </footer>
 </body>
