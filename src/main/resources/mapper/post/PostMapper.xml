@@ -5,39 +5,39 @@
 <mapper namespace="com.example.vibeapp.post.PostRepository">
 
     <select id="findAll" resultType="Post">
-        SELECT * FROM POST ORDER BY no DESC
+        SELECT * FROM POSTS ORDER BY NO DESC
     </select>
 
     <select id="findById" resultType="Post">
-        SELECT * FROM POST WHERE no = #{no}
+        SELECT * FROM POSTS WHERE NO = #{no}
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="no">
-        INSERT INTO POST (title, content, created_at, views)
+        INSERT INTO POSTS (TITLE, CONTENT, CREATED_AT, VIEWS)
         VALUES (#{title}, #{content}, #{createdAt}, #{views})
     </insert>
 
     <update id="update">
-        UPDATE POST
-        SET title = #{title},
-            content = #{content},
-            updated_at = #{updatedAt},
-            views = #{views}
-        WHERE no = #{no}
+        UPDATE POSTS
+        SET TITLE = #{title},
+            CONTENT = #{content},
+            UPDATED_AT = #{updatedAt},
+            VIEWS = #{views}
+        WHERE NO = #{no}
     </update>
 
     <delete id="deleteById">
-        DELETE FROM POST WHERE no = #{no}
+        DELETE FROM POSTS WHERE NO = #{no}
     </delete>
 
     <select id="findPaged" resultType="Post">
-        SELECT * FROM POST 
-        ORDER BY no DESC
+        SELECT * FROM POSTS 
+        ORDER BY NO DESC
         LIMIT #{size} OFFSET #{offset}
     </select>
 
     <select id="count" resultType="int">
-        SELECT COUNT(*) FROM POST
+        SELECT COUNT(*) FROM POSTS
     </select>
 
 </mapper>

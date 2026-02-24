@@ -22,19 +22,7 @@ public class PostService {
 
     @PostConstruct
     public void init() {
-        if (postRepository.count() == 0) {
-            for (int i = 1; i <= 10; i++) {
-                Post post = new Post(
-                    null,
-                    "Vibe Coding 게시글 제목 " + i,
-                    "이것은 세련된 게시글 " + i + "의 내용입니다. Vibe Coding 프로젝트가 원활하게 진행되고 있습니다.",
-                    LocalDateTime.now().minusDays(10 - i),
-                    null,
-                    i * 15
-                );
-                postRepository.save(post);
-            }
-        }
+        // 초기 데이터는 src/main/resources/data.sql에서 관리합니다.
     }
 
     public List<PostListDto> findAllPosts() {
