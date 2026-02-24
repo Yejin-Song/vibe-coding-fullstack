@@ -1,5 +1,9 @@
 package com.example.vibeapp.post;
 
+import com.example.vibeapp.post.dto.PostCreateDto;
+import com.example.vibeapp.post.dto.PostListDto;
+import com.example.vibeapp.post.dto.PostResponseDto;
+import com.example.vibeapp.post.dto.PostUpdateDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -30,35 +34,31 @@ public class PostService {
         }
     }
 
-    public List<Post> findAllPosts() {
+    public List<PostListDto> findAllPosts() {
         return postRepository.findAll().stream()
                 .sorted(Comparator.comparing(Post::getNo).reversed())
+                .map(PostListDto::from)
                 .collect(Collectors.toList());
     }
 
-    public Post findPostById(Long no) {
+    public PostResponseDto findPostById(Long no) {
         Post post = postRepository.findById(no);
         if (post != null) {
             post.setViews(post.getViews() + 1);
         }
-        return post;
+        return PostResponseDto.from(post);
     }
 
-    public void createPost(String title, String content) {
-        Post post = new Post();
-        post.setTitle(title);
-        post.setContent(content);
-        post.setCreatedAt(LocalDateTime.now());
-        post.setUpdatedAt(null);
-        post.setViews(0);
+    public void createPost(PostCreateDto createDto) {
+        Post post = createDto.toEntity();
         postRepository.save(post);
     }
 
-    public void updatePost(Long no, String title, String content) {
+    public void updatePost(Long no, PostUpdateDto updateDto) {
         Post post = postRepository.findById(no);
         if (post != null) {
-            post.setTitle(title);
-            post.setContent(content);
+            post.setTitle(updateDto.getTitle());
+            post.setContent(updateDto.getContent());
             post.setUpdatedAt(LocalDateTime.now());
         }
     }
@@ -67,8 +67,8 @@ public class PostService {
         postRepository.deleteById(no);
     }
 
-    public List<Post> findPostsPaged(int page, int size) {
-        List<Post> allPosts = findAllPosts();
+    public List<PostListDto> findPostsPaged(int page, int size) {
+        List<PostListDto> allPosts = findAllPosts();
         int startIndex = (page - 1) * size;
         if (startIndex >= allPosts.size()) {
             return java.util.Collections.emptyList();
