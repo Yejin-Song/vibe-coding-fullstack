@@ -103,9 +103,16 @@
             </header>
 
             <article class="bg-white rounded-[32px] p-10 md:p-16 shadow-xl border border-gray-100 min-h-[400px]">
-                <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed whitespace-pre-wrap"
+                <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed whitespace-pre-wrap mb-10"
                     th:text="${post.content}">
                     게시글 내용이 여기에 표시됩니다.
+                </div>
+
+                <div th:if="${!post.tags.isEmpty()}" class="pt-8 border-t border-gray-50 flex flex-wrap gap-2">
+                    <span th:each="tag : ${post.tags}" th:text="'#' + ${tag}"
+                        class="px-4 py-1.5 rounded-full bg-gray-50 text-gray-500 text-xs font-bold hover:bg-samsung-blue/5 hover:text-samsung-blue transition-colors cursor-default">
+                        #Tag
+                    </span>
                 </div>
             </article>
 

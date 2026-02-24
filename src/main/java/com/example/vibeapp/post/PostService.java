@@ -15,9 +15,11 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final PostTagRepository postTagRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, PostTagRepository postTagRepository) {
         this.postRepository = postRepository;
+        this.postTagRepository = postTagRepository;
     }
 
     @PostConstruct
@@ -36,13 +38,21 @@ public class PostService {
         if (post != null) {
             post.setViews(post.getViews() + 1);
             postRepository.update(post);
+            
+            List<String> tags = postTagRepository.findByPostNo(no).stream()
+                    .map(PostTag::getTagName)
+                    .collect(Collectors.toList());
+            
+            return PostResponseDto.from(post, tags);
         }
-        return PostResponseDto.from(post);
+        return null;
     }
 
     public void createPost(PostCreateDto createDto) {
         Post post = createDto.toEntity();
         postRepository.save(post);
+        
+        saveTags(post.getNo(), createDto.tags());
     }
 
     public void updatePost(Long no, PostUpdateDto updateDto) {
@@ -52,6 +62,21 @@ public class PostService {
             post.setContent(updateDto.content());
             post.setUpdatedAt(LocalDateTime.now());
             postRepository.update(post);
+            
+            postTagRepository.deleteByPostNo(no);
+            saveTags(no, updateDto.tags());
+        }
+    }
+
+    private void saveTags(Long postNo, String tagsString) {
+        if (tagsString == null || tagsString.isBlank()) return;
+        
+        String[] tags = tagsString.split(",");
+        for (String tag : tags) {
+            String trimmedTag = tag.trim();
+            if (!trimmedTag.isEmpty()) {
+                postTagRepository.save(new PostTag(null, postNo, trimmedTag));
+            }
         }
     }
 

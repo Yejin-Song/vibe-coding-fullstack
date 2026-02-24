@@ -17,4 +17,8 @@
         DELETE FROM POST_TAGS WHERE POST_NO = #{postNo}
     </delete>
 
+    <select id="findByPostNo" resultType="com.example.vibeapp.post.PostTag">
+        SELECT * FROM POST_TAGS WHERE POST_NO = #{postNo}
+    </select>
+
 </mapper>
