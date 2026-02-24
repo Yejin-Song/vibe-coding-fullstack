@@ -12,10 +12,4 @@ public class VibeApp {
         SpringApplication.run(VibeApp.class, args);
     }
 
-    @GetMapping("/api/hello")
-    @ResponseBody
-    public String hello() {
-        return "Hello, Vibe!";
-    }
-
 }

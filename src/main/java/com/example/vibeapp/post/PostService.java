@@ -30,13 +30,13 @@ public class PostService {
         }
     }
 
-    public List<Post> getAllPosts() {
+    public List<Post> findAllPosts() {
         return postRepository.findAll().stream()
                 .sorted(Comparator.comparing(Post::getNo).reversed())
                 .collect(Collectors.toList());
     }
 
-    public Post getPost(Long no) {
+    public Post findPostById(Long no) {
         Post post = postRepository.findById(no);
         if (post != null) {
             post.setViews(post.getViews() + 1);
@@ -44,7 +44,7 @@ public class PostService {
         return post;
     }
 
-    public void addPost(String title, String content) {
+    public void createPost(String title, String content) {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
@@ -67,8 +67,8 @@ public class PostService {
         postRepository.deleteById(no);
     }
 
-    public List<Post> getPostsPaged(int page, int size) {
-        List<Post> allPosts = getAllPosts();
+    public List<Post> findPostsPaged(int page, int size) {
+        List<Post> allPosts = findAllPosts();
         int startIndex = (page - 1) * size;
         if (startIndex >= allPosts.size()) {
             return java.util.Collections.emptyList();
