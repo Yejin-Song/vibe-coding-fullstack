@@ -67,4 +67,19 @@ public class PostService {
     public void deletePost(Long no) {
         postRepository.deleteById(no);
     }
+
+    public List<Post> getPostsPaged(int page, int size) {
+        List<Post> allPosts = getAllPosts();
+        int startIndex = (page - 1) * size;
+        if (startIndex >= allPosts.size()) {
+            return java.util.Collections.emptyList();
+        }
+        int endIndex = Math.min(startIndex + size, allPosts.size());
+        return allPosts.subList(startIndex, endIndex);
+    }
+
+    public int getTotalPages(int size) {
+        int totalPosts = postRepository.findAll().size();
+        return (int) Math.ceil((double) totalPosts / size);
+    }
 }

@@ -107,6 +107,31 @@
                 </table>
             </div>
 
+            <!-- 페이징 네비게이션 -->
+            <div th:if="${totalPages > 0}" class="mt-10 flex items-center justify-center gap-2">
+                <!-- 이전 페이지 -->
+                <a th:href="@{/posts(page=${currentPage - 1})}" th:if="${currentPage > 1}"
+                    class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:border-black hover:text-black transition-all">
+                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                </a>
+
+                <!-- 페이지 번호 -->
+                <div class="flex items-center gap-1">
+                    <a th:each="pageNum : ${#numbers.sequence(1, totalPages)}" th:href="@{/posts(page=${pageNum})}"
+                        th:text="${pageNum}"
+                        th:classappend="${pageNum == currentPage} ? 'bg-black text-white' : 'text-gray-400 hover:text-black'"
+                        class="w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all">
+                        1
+                    </a>
+                </div>
+
+                <!-- 다음 페이지 -->
+                <a th:href="@{/posts(page=${currentPage + 1})}" th:if="${currentPage < totalPages}"
+                    class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:border-black hover:text-black transition-all">
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </a>
+            </div>
+
             <div class="mt-12 flex justify-center">
                 <a th:href="@{/posts/new}"
                     class="bg-black text-white px-10 py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">
