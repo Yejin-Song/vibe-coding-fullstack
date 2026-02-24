@@ -2,9 +2,10 @@ package com.example.vibeapp;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@EnableTransactionManagement
 public class VibeApp {
 
     public static void main(String[] args) {

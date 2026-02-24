@@ -6,6 +6,7 @@ import com.example.vibeapp.post.dto.PostResponseDto;
 import com.example.vibeapp.post.dto.PostUpdateDto;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
     private final PostTagRepository postTagRepository;
@@ -48,6 +50,7 @@ public class PostService {
         return null;
     }
 
+    @Transactional
     public void createPost(PostCreateDto createDto) {
         Post post = createDto.toEntity();
         postRepository.save(post);
@@ -55,6 +58,7 @@ public class PostService {
         saveTags(post.getNo(), createDto.tags());
     }
 
+    @Transactional
     public void updatePost(Long no, PostUpdateDto updateDto) {
         Post post = postRepository.findById(no);
         if (post != null) {
@@ -80,6 +84,7 @@ public class PostService {
         }
     }
 
+    @Transactional
     public void deletePost(Long no) {
         postRepository.deleteById(no);
     }
